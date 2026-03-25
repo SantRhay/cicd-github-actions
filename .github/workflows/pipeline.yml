@@ -3,42 +3,35 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-
   ci:
-    name: Teste (CI)
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Instalar dependências
-        run: npm install
-
-      - name: Ruodar testes
-        run: npm test
+      - name: Rodar testes
+        run: node test.js
         working-directory: app
 
   cd:
-    name: Deploy (CD)
     needs: ci
     runs-on: ubuntu-latest
 
-    evironment:
+    environment:
       name: staging
 
-      steps:
-        - name: Checkout do código
-          uses: actions/checkout@v3
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
 
-        - name: Simular deploy
-          run: echo "Deploy realizado com sucesso!"
+      - name: Deploy para staging
+        run: echo "Deploying realizado com sucesso!"
+      
